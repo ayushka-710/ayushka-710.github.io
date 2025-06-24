@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+	<title>SigninSignUp</title>
+
+
+	<style media="screen">
+		body {
+			margin: auto;
+			color: #6a6f8c;
+			background: #c8c8c8;
+			font: 600 16px/18px 'Open Sans', sans-serif;
+		}
+
+		*,
+		:after,
+		:before {
+			box-sizing: border-box
+		}
+
+		.clearfix:after,
+		.clearfix:before {
+			content: '';
+			display: table
+		}
+
+		.clearfix:after {
+			clear: both;
+			display: block
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none
+		}
+
+		.login-wrap {
+			width: 100%;
+			margin: auto;
+			max-width: 525px;
+			min-height: 800px;
+			position: relative;
+			background: url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
+			box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+		}
+
+		.login-html {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			padding: 90px 70px 50px 70px;
+			background: rgba(40, 57, 101, .9);
+		}
+
+		.login-html .sign-in-htm,
+		.login-html .sign-up-htm {
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 20px;
+			position: absolute;
+			transform: rotateY(180deg);
+			backface-visibility: hidden;
+			transition: all .4s linear;
+		}
+
+		.login-html .sign-in,
+		.login-html .sign-up,
+		.login-form .group .check {
+			display: none;
+		}
+
+		.login-html .tab,
+		.login-form .group .label,
+		.login-form .group .button {
+			text-transform: uppercase;
+		}
+
+		.login-html .tab {
+			font-size: 22px;
+			margin-right: 15px;
+			padding-bottom: 5px;
+			margin: 0 15px 10px 0;
+			display: inline-block;
+			border-bottom: 2px solid transparent;
+			cursor: pointer;
+		}
+
+		.login-html .tab:hover,
+		.login-html .sign-in:checked+.tab,
+		.login-html .sign-up:checked+.tab {
+			color: #fff;
+			border-color: #1161ee;
+		}
+
+		.login-form {
+			min-height: 345px;
+			position: relative;
+			perspective: 1000px;
+			transform-style: preserve-3d;
+		}
+
+		.login-form .group {
+			margin-bottom: 15px;
+		}
+
+		.login-form .group .label,
+		.login-form .group .input,
+		.login-form .group .button {
+			width: 100%;
+			color: #fff;
+			display: block;
+		}
+
+		.login-form .group .input,
+		.login-form .group .button {
+			border: none;
+			padding: 15px 20px;
+			border-radius: 25px;
+			background: rgba(255, 255, 255, .1);
+		}
+
+		.login-form .group input[data-type="password"] {
+			text-security: circle;
+			-webkit-text-security: circle;
+		}
+
+		.login-form .group .label {
+			color: #aaa;
+			font-size: 12px;
+		}
+
+		.login-form .group .button {
+			background: #1161ee;
+			cursor: pointer;
+			border-radius: 25px;
+			color: #fff;
+			cursor: pointer;
+			transition: background 0.1s ease;
+		}
+
+		.login-form .group .button:hover {
+			background: lightgreen;
+			color: black;
+
+		}
+
+		.login-form .group label .icon {
+			width: 15px;
+			height: 15px;
+			border-radius: 2px;
+			position: relative;
+			display: inline-block;
+			background: rgba(255, 255, 255, .1);
+		}
+
+		.login-form .group label .icon:before,
+		.login-form .group label .icon:after {
+			content: '';
+			width: 10px;
+			height: 2px;
+			background: #fff;
+			position: absolute;
+			transition: all .2s ease-in-out 0s;
+		}
+
+		.login-form .group label .icon:before {
+			left: 3px;
+			width: 5px;
+			bottom: 6px;
+			transform: scale(0) rotate(0);
+		}
+
+		.login-form .group label .icon:after {
+			top: 6px;
+			right: 0;
+			transform: scale(0) rotate(0);
+		}
+
+		.login-form .group .check:checked+label {
+			color: #fff;
+		}
+
+		.login-form .group .check:checked+label .icon {
+			background: #1161ee;
+		}
+
+		.login-form .group .check:checked+label .icon:before {
+			transform: scale(1) rotate(45deg);
+		}
+
+		.login-form .group .check:checked+label .icon:after {
+			transform: scale(1) rotate(-45deg);
+		}
+
+		.login-html .sign-in:checked+.tab+.sign-up+.tab+.login-form .sign-in-htm {
+			transform: rotate(0);
+		}
+
+		.login-html .sign-up:checked+.tab+.login-form .sign-up-htm {
+			transform: rotate(0);
+		}
+
+		.hr {
+			height: 1px;
+			margin: 30px 0 30px 0;
+			background: rgba(255, 255, 255, .2);
+		}
+
+		.foot-lnk {
+			text-align: center;
+			text-decoration: none;
+			transition: color 0.3s ease;
+
+		}
+
+		.foot-lnk:hover {
+			color: white;
+
+		}
+
+		input::placeholder {
+			color: wheat;
+			opacity: 0.5;
+		}
+
+		.alert {
+			padding: 5px;
+			border-radius: 2px;
+			font-size: 16px;
+			opacity: 1;
+			transition: opacity 1s ease-in-out;
+		}
+
+		.alert-danger {
+
+			color: #f44336;
+			background-color: #ffebee;
+			border: 1px solid #f44336;
+		}
+
+		.password-strength {
+			margin-top: 5px;
+			font-size: 14px;
+			font-weight: bold;
+		}
+
+		.strength-weak {
+			color: red;
+		}
+
+		.strength-medium {
+			color: orange;
+		}
+
+		.strength-strong {
+			color: green;
+		}
+
+		.password-criteria {
+			margin-top: 10px;
+			padding: 20px;
+			background: rgba(255, 255, 255, .8);
+			border-radius: 8px;
+			position: absolute;
+			right: 3%;
+			top: 25%;
+			width: 400px;
+			display: none;
+		}
+
+		.criteria-not-met {
+			color: red;
+		}
+
+		.criteria-met {
+			color: green;
+		}
+
+		#criteria-list {
+			list-style-type: none;
+			padding: 0;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<form action="{% url 'index' %}" method="post">
+		{% csrf_token %}
+		<div class="login-wrap">
+			{% if messages %}
+			<div class="messages">
+				{% for message in messages %}
+				<div class="alert alert-danger" id="message-box">{{ message }}</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+			<div class="login-html">
+				<input id="tab-1" type="radio" name="tab" class="sign-in" onclick="togglePasswordCriteria(); saveTabSelection();" checked>
+				<label for="tab-1" class="tab">Sign In</label>
+				<input id="tab-2" type="radio" name="tab" class="sign-up" onclick="togglePasswordCriteria(); saveTabSelection();">
+				<label for="tab-2" class="tab">Sign Up</label>
+
+				<div class="login-form">
+					<!-- Sign In Form -->
+					<div class="sign-in-htm" id="sign-in-form">
+						<div class="group">
+							<label for="signin-username" class="label">Username</label>
+							<input id="signin-username" type="text" placeholder="Ashutosh123" class="input"
+								name="username">
+						</div>
+						<div class="group">
+							<label for="signin-password" class="label">Password</label>
+							<input id="signin-password" type="password" placeholder="Special_char32@" class="input"
+								data-type="password" name="password">
+						</div>
+						<div class="group">
+							<input id="signin-check" type="checkbox" class="check" checked>
+							<label for="signin-check"><span class="icon"></span> Keep me Signed in</label>
+						</div>
+						<div class="g-recaptcha" data-sitekey="6Lf-fEYqAAAAAECo1pW8Bl7BbeHzrbkqfGhwPi44"></div><br>
+
+						<div class="group">
+							<input type="submit" name="sign_in" class="button" value="Sign In">
+						</div>
+						<div class="hr"></div>
+						<div class="foot-lnk">
+							<a href="forgetpassword.html">Forgot Password?</a>
+						</div>
+					</div>
+
+					<!-- Sign Up Form -->
+					<div class="sign-up-htm" id="sign-up-form">
+						<div class="group">
+							<label for="signup-username" class="label">Username</label>
+							<input id="signup-username" type="text" placeholder="Ashutosh123" class="input"
+								name="username" value="{{ username|default_if_none:'' }}">
+						</div>
+						<div class="group">
+							<label for="signup-fname" class="label">First Name</label>
+							<input id="signup-fname" type="text" placeholder="Ashutosh" class="input" name="firstname"
+								value="{{ firstname|default_if_none:'' }}">
+						</div>
+						<div class="group">
+							<label for="signup-lname" class="label">Last Name</label>
+							<input id="signup-lname" type="text" placeholder="Kharel" class="input" name="lastname"
+								value="{{ lastname|default_if_none:'' }}">
+						</div>
+						<div class="group">
+							<label for="signup-email" class="label">Email Address</label>
+							<input id="signup-email" type="text" placeholder="ashutosh_kharel721@gmail.com"
+								class="input" name="email" value="{{ email|default_if_none:'' }}">
+						</div>
+						<div class="group">
+							<label for="signup-password" class="label">Password</label>
+							<input id="signup-password" type="password" class="input" placeholder="Special_char32@"
+								data-type="password" name="password" onkeyup="checkPasswordStrength()">
+							<i class="fas fa-eye" id="toggle-signup-password"></i>
+						</div>
+						<div id="password-strength-status" class="password-strength"></div>
+						<div class="group">
+							<label for="signup-rpassword" class="label">Repeat Password</label>
+							<input id="signup-rpassword" type="password" class="input" placeholder="Special_char32@"
+								data-type="password" name="rpassword">
+							<i class="fas fa-eye" id="toggle-signup-rpassword"></i>
+						</div>
+						<div class="group">
+							<input type="submit" name="sign_up" class="button" value="Sign Up">
+						</div>
+						<div class="hr"></div>
+						<div class="foot-lnk">
+							<label for="tab-1">Already Member?</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<!-- Password Criteria Section -->
+	<div class="password-criteria" id="password-criteria">
+		<h4>Password Criteria</h4>
+		<ul id="criteria-list">
+			<li id="length" class="criteria-not-met">At least 8 characters</li><br>
+			<li id="lowercase" class="criteria-not-met">Contains lowercase letters</li><br>
+			<li id="uppercase" class="criteria-not-met">Contains uppercase letters</li><br>
+			<li id="numbers" class="criteria-not-met">Contains numbers</li><br>
+			<li id="special" class="criteria-not-met">Contains special characters (e.g. @$!%*#?&)</li><br>
+		</ul>
+	</div>
+
+	<script>
+
+		// Function to toggle password criteria visibility
+		function togglePasswordCriteria() {
+			const signUpTab = document.getElementById('tab-2');
+			const passwordCriteria = document.getElementById('password-criteria');
+			passwordCriteria.style.display = signUpTab.checked ? 'block' : 'none';
+		}
+
+		// Function to check password strength
+		function checkPasswordStrength() {
+			const password = document.getElementById('signup-password').value;
+			 // Criteria elements
+			 const criteria = {
+                length: document.getElementById('length'),
+                lowercase: document.getElementById('lowercase'),
+                uppercase: document.getElementById('uppercase'),
+                numbers: document.getElementById('numbers'),
+                special: document.getElementById('special'),
+            };
+
+            // Check criteria
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasNumbers = /[0-9]/.test(password);
+            const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const isLongEnough = password.length >= 8;
+
+            // Update criteria list
+            criteria.length.className = isLongEnough ? 'criteria-met' : 'criteria-not-met';
+            criteria.lowercase.className = hasLowerCase ? 'criteria-met' : 'criteria-not-met';
+            criteria.uppercase.className = hasUpperCase ? 'criteria-met' : 'criteria-not-met';
+            criteria.numbers.className = hasNumbers ? 'criteria-met' : 'criteria-not-met';
+            criteria.special.className = hasSpecialChars ? 'criteria-met' : 'criteria-not-met';
+
+			const strengthStatus = document.getElementById('password-strength-status');
+
+			let strength = '';
+			let colorClass = '';
+
+			// Determine strength
+			if (password.length === 0) {
+				strength = '';
+				colorClass = '';
+			} else if (isLongEnough && hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChars) {
+				strength = 'Strong';
+				colorClass = 'strength-strong';
+			} else if (isLongEnough && ((hasUpperCase && hasLowerCase) || hasNumbers || hasSpecialChars)) {
+				strength = 'Medium';
+				colorClass = 'strength-medium';
+			} else {
+				strength = 'Weak';
+				colorClass = 'strength-weak';
+			}
+
+			// Update the strength meter
+			strengthStatus.textContent = strength;
+			strengthStatus.className = 'password-strength ' + colorClass;
+		}
+
+
+		// Function to save the selected tab to localStorage
+		function saveTabSelection() {
+			const selectedTab = document.querySelector('input[name="tab"]:checked').id;
+			localStorage.setItem('selectedTab', selectedTab);
+		}
+
+		// Function to restore the selected tab from localStorage
+		function restoreTabSelection() {
+			const savedTab = localStorage.getItem('selectedTab');
+			if (savedTab) {
+				document.getElementById(savedTab).checked = true;
+			}
+		}
+
+		// Save tab selection on form submission
+		document.querySelector('form').addEventListener('submit', saveTabSelection);
+
+		// Restore the tab selection on page load
+		document.addEventListener('DOMContentLoaded', restoreTabSelection);
+
+		// Hide message after 3 seconds
+		setTimeout(function () {
+			var messageBox = document.getElementById('message-box');
+			if (messageBox) {
+				messageBox.style.opacity = '0';
+				setTimeout(function () {
+					messageBox.style.display = 'none';
+				}, 1000);
+			}
+		}, 3000);
+
+
+	</script>
+</body>
+
+</html>
